@@ -8,9 +8,6 @@ export class RatesProvider {
   getPriceInEUR(currency: Currency): Money {
     const rateInEUR = this.storage.getRateInEUR(currency);
 
-    return {
-      currency: Currency.EUR,
-      amount: rateInEUR,
-    };
+    return Money.of(rateInEUR, Currency.EUR);
   }
 }

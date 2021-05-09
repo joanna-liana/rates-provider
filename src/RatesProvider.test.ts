@@ -16,7 +16,7 @@ describe('RatesProvider', () => {
       const price = ratesProvider.getPriceInEUR(currency);
 
       expect(price.currency).toBe(Currency.EUR);
-      expect(price.amount).toBe(rate);
+      expect(price.value).toBe(rate);
     }
   );
 

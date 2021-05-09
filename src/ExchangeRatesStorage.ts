@@ -1,4 +1,5 @@
 import { Currency } from './Currency';
+import { Amount } from './Amount';
 import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
 
 export class ExchangeRatesStorage {
@@ -9,13 +10,13 @@ export class ExchangeRatesStorage {
     [Currency.GBP, 1.1],
   ]);
 
-  getRateInEUR(currency: Currency): number {
+  getRateInEUR(currency: Currency): Amount {
     const rate = this.exchangeRatesInEUR.get(currency);
 
     if (!rate) {
       throw new UnsupportedCurrency();
     }
 
-    return rate;
+    return Amount.of(rate);
   }
 }
