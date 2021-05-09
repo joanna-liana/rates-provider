@@ -1,4 +1,3 @@
-import { Amount } from './Amount';
 import { Currency } from './Currency';
 import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
 import { Money } from './Money';
@@ -6,7 +5,7 @@ import { Money } from './Money';
 describe('Money', () => {
   it('creates a valid instance', async () => {
     // given, when
-    const money = Money.of(Amount.of(100), Currency.USD);
+    const money = Money.of(100, Currency.USD);
 
     // then
     expect(money.value).toBe(100);
@@ -17,7 +16,7 @@ describe('Money', () => {
     'creates Money in different currencies - %s',
     async (currency) => {
       // given, when
-      const money = Money.of(Amount.of(100), currency);
+      const money = Money.of(100, currency);
 
       // then
       expect(money.value).toBe(100);
@@ -26,7 +25,7 @@ describe('Money', () => {
   );
 
   it('throws when the provided currency is unsupported', async () => {
-    expect(() => Money.of(Amount.of(10), 'INVALID' as never)).toThrowError(
+    expect(() => Money.of(10, 'INVALID' as never)).toThrowError(
       new UnsupportedCurrency()
     );
   });
@@ -35,7 +34,7 @@ describe('Money', () => {
     'creates Money with the precise amount passed as a number - %f',
     async (amount) => {
       // given, when
-      const money = Money.of(Amount.of(amount), Currency.CAD);
+      const money = Money.of(amount, Currency.CAD);
 
       // then
       expect(money.value).toBe(amount);
@@ -51,7 +50,7 @@ describe('Money', () => {
     'creates Money with the precise amount passed as a string - %s',
     async (stringified, expectedAmount) => {
       // given, when
-      const money = Money.of(Amount.of(stringified), Currency.GBP);
+      const money = Money.of(stringified, Currency.GBP);
 
       // then
       expect(money.value).toBe(expectedAmount);
