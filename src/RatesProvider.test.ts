@@ -24,7 +24,7 @@ describe('RatesProvider', () => {
     const unsupportedCurrency = 'UNSUPPORTED';
 
     expect(() =>
-      ratesProvider.getPriceInEUR(unsupportedCurrency as any)
+      ratesProvider.getPriceInEUR(unsupportedCurrency as never)
     ).toThrowError(new UnsupportedCurrency());
   });
 });

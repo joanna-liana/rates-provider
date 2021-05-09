@@ -9,7 +9,7 @@ export class ExchangeRatesStorage {
     [Currency.GBP, 1.1],
   ]);
 
-  getRateInEUR(currency: Currency) {
+  getRateInEUR(currency: Currency): number {
     const rate = this.exchangeRatesInEUR.get(currency);
 
     if (!rate) {
