@@ -1,12 +1,41 @@
 import { Currency } from './Currency';
 import Amount from 'currency.js';
+import cloneDeep from 'lodash.clonedeep';
 
 import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
 import { InvalidAmount } from './errors/InvalidAmount';
 
+interface CurrencyProps {
+  symbol: string;
+  separator?: string;
+  decimal?: string;
+  pattern?: string;
+}
+
 export class Money {
   #amountObject: Amount;
   #currency: Currency;
+
+  private static currencyPropsMap: { [key in Currency]: CurrencyProps } = {
+    [Currency.CAD]: {
+      symbol: '$',
+    },
+    [Currency.USD]: {
+      symbol: '$',
+    },
+    [Currency.GBP]: {
+      symbol: '£',
+    },
+    [Currency.EUR]: {
+      symbol: '€',
+    },
+    [Currency.PLN]: {
+      symbol: 'zł',
+      decimal: ',',
+      separator: '.',
+      pattern: '# !',
+    },
+  };
 
   private constructor(amount: Amount, currency: Currency) {
     this.#amountObject = amount;
@@ -21,7 +50,11 @@ export class Money {
     let amount: Amount;
 
     try {
-      amount = Amount(value, { precision: 10, errorOnInvalid: true });
+      amount = Amount(value, {
+        precision: 10,
+        errorOnInvalid: true,
+        ...this.currencyPropsMap[currency],
+      });
     } catch {
       throw new InvalidAmount();
     }
@@ -35,5 +68,16 @@ export class Money {
 
   get currency(): Currency {
     return this.#currency;
+  }
+
+  toString(precision = 2): string {
+    const amountCopy = cloneDeep(this.#amountObject);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (amountCopy as any).s.precision = precision;
+
+    const str = amountCopy.format();
+
+    return str;
   }
 }
