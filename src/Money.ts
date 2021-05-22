@@ -1,9 +1,9 @@
-import { Currency } from './Currency';
 import Amount from 'currency.js';
 import cloneDeep from 'lodash.clonedeep';
 
-import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
+import { Currency } from './Currency';
 import { InvalidAmount } from './errors/InvalidAmount';
+import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
 
 interface CurrencyProps {
   symbol: string;

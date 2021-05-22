@@ -1,12 +1,17 @@
-import { Money } from './Money';
+import { RatesAPI } from './api/RatesAPI';
 import { Currency } from './Currency';
-import { ExchangeRatesStorage } from './ExchangeRatesStorage';
+import { UnsupportedCurrency } from './errors/UnsupportedCurrency';
+import { Money } from './Money';
 
 export class RatesProvider {
-  constructor(private readonly storage = new ExchangeRatesStorage()) {}
+  constructor(private readonly storage: RatesAPI) {}
 
-  getPriceInEUR(currency: Currency): Money {
-    const rateInEUR = this.storage.getRateInEUR(currency);
+  async getPriceInEUR(currency: Currency): Promise<Money> {
+    const rateInEUR = await this.storage.getRateInEUR(currency);
+
+    if (!rateInEUR) {
+      throw new UnsupportedCurrency();
+    }
 
     return Money.of(rateInEUR, Currency.EUR);
   }
